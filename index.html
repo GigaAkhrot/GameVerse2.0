@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameVerse - Cyberpunk Gaming Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="./favicon img/favicon-96x96.png" sizes="96x96" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+    }
+
+    nav {
+      background: #111;
+      padding: 15px 30px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #00ffff44;
+    }
+    nav h1 {
+      color: #00ffff;
+      font-size: 24px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+    nav ul li a, nav ul li button {
+      text-decoration: none;
+      color: #eee;
+      background: none;
+      border: none;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    nav ul li a:hover, nav ul li button:hover {
+      color: #ff00ff;
+    }
+
+    .hero {
+      background: url('./img/dark-hexagonal-background-with-gradient-color_79603-1409.avif') no-repeat center center/cover;
+      height: 100vh;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-shadow: 0 0 5px #000;
+    }
+    .hero h2 {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      color: #00ffff;
+    }
+
+    section {
+      padding: 80px 20px;
+      background-color: #141414;
+      border-bottom: 1px solid #333;
+    }
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #00ffff;
+      text-shadow: 0 0 8px #00ffff88;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+    .product-card {
+      background: #1e1e2e;
+      border: 1px solid #00ffff33;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s, border 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: #ff00ff;
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .product-card h3 {
+      margin: 15px;
+      font-size: 1.2rem;
+      color: #ff00ff;
+    }
+    .product-card p {
+      margin: 0 15px 15px;
+      font-size: 0.9rem;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, textarea {
+      padding: 12px;
+      background: #222;
+      border: none;
+      border-radius: 5px;
+      color: #00ffff;
+    }
+    button {
+      padding: 12px;
+      background: #ff00ff;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e600e6;
+    }
+
+    .star-rating {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .star {
+      color: #555;
+      transition: color 0.2s;
+    }
+    .star.hovered, .star.selected {
+      color: #f5c518;
+    }
+
+    footer {
+      background: #0d0d0d;
+      color: #666;
+      text-align: center;
+      padding: 30px 10px;
+      border-top: 1px solid #222;
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+    }
+    .modal-content {
+      background: #1e1e2e;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 15px #00ffff88;
+      color: #eee;
+      position: relative;
+    }
+    .modal-content h3 {
+      color: #00ffff;
+      margin-bottom: 15px;
+    }
+    .modal-content input {
+      background: #2a2a2a;
+      color: #0ff;
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 20px;
+      color: #ff00ff;
+      cursor: pointer;
+    }
+   .carousel-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* .products-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 25px;
+  padding: 20px 10px;
+}
+.products-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.products-scroll::-webkit-scrollbar-thumb {
+  background: #00ffff;
+  border-radius: 5px;
+}
+.products-scroll::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.product-card {
+  flex: 0 0 280px;
+  transition: transform 0.3s, border 0.3s;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #111;
+  color: #00ffff;
+  border: 2px solid #00ffff88;
+  border-radius: 50%;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 10;
+}
+.scroll-btn:hover {
+  background: #222;
+  color: #ff00ff;
+}
+.scroll-btn.left {
+  left: 5px;
+}
+.scroll-btn.right {
+  right: 5px;
+} */
+ .products-scroll {
+  display: flex;
+  gap: 25px;
+  padding: 20px 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* hides scrollbar on Firefox */
+}
+.products-scroll::-webkit-scrollbar {
+  display: none; /* hides scrollbar on Chrome/Safari */
+}
+
+.product-card {
+  flex: 0 0 280px;
+  transition: transform 0.3s ease;
+}
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #111;
+  color: #00ffff;
+  border: 2px solid #00ffff88;
+  border-radius: 50%;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 10;
+}
+.scroll-btn:hover {
+  background: #222;
+  color: #ff00ff;
+}
+.scroll-btn.left {
+  left: 5px;
+}
+.scroll-btn.right {
+  right: 5px;
+}
+
+#home {
+  height: 100vh;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 1s ease-in-out;
+}
+
+.home-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* dark overlay */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #00ffff;
+  padding-top: 60px;
+  z-index: 1;
+}
+
+#home h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+#home p {
+  font-size: 1.5em;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <h1>
+      <img src="./favicon img/favicon.ico" alt="favicon">
+      GameVerse</h1>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#products">Games</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><button onclick="openModal('login')">Login</button></li>
+      <li><button onclick="openModal('signup')">Sign Up</button></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero" id="home">
+    <h2>Welcome to GameVerse</h2>
+    <p>The Cyberpunk Nexus of Gaming</p>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>We are a digital sanctuary for gamers living in neon dreams. GameVerse delivers futuristic experiences, cutting-edge hardware, and titles that light up the grid.</p>
+  </section>
+
+    <!-- Product Section -->
+<section id="products">
+  <h2>Top Cyberpunk Games</h2>
+  <div class="carousel-container">
+    <button class="scroll-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+    <div class="products-scroll" id="gameCarousel">
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg" alt="Cyberpunk 2077">
+        <h3>Cyberpunk 2077</h3>
+        <p>Enter the neon-lit Night City with high-tech weapons and deep storylines.</p>
+      </div>
+      <div class="product-card">
+  <img src="./img/gta-5-qpjtjdxwbwrk4gyj.jpg" alt="GTA V">
+  <h3>Grand Theft Auto V</h3>
+  <p>Enter the chaotic world of Los Santos in this open-world action-adventure game.</p>
+</div>
+<div class="product-card">
+  <img src="./img/blizzard-entertainment-overwatch-video-games-reaper-overwatch-wallpaper-preview.jpg" alt="Overwatch">
+  <h3>Overwatch</h3>
+  <p>Team-based first-person shooter with unique heroes and abilities.</p>
+</div>
+<div class="product-card">
+  <img src="./img/COD.jpg" alt="Call of Duty">
+  <h3>Call of Duty: Modern Warfare</h3>
+  <p>Fast-paced military shooter with realistic warfare and cinematic campaigns.</p>
+</div>
+<div class="product-card">
+  <img src="./img/ultrakill-v1-ultrakill-coin-gun-hd-wallpaper-preview.jpg" alt="ULTRAKILL">
+  <h3>ULTRAKILL</h3>
+  <p>Fast-paced, retro-style shooter with explosive action and stunning visuals.</p>
+</div>
+<div class="product-card">
+  <img src="./img/elden-ring-3840x2160-20173.jpg" alt="Elden Ring">
+  <h3>Elden Ring</h3>
+  <p>Explore the Lands Between in this action RPG from the creators of Dark Souls.</p>
+</div>
+
+      <div class="product-card">
+        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1118310/header.jpg" alt="Ghostrunner">
+        <h3>Ghostrunner</h3>
+        <p>Slice through enemies with parkour and cyber-ninja precision.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/619780/header.jpg" alt="Ruiner">
+        <h3>RUINER</h3>
+        <p>Fast-paced top-down shooter set in 2091 Rengkok.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/734580/header.jpg" alt="Dex">
+        <h3>Dex</h3>
+        <p>2D cyberpunk RPG with hacking and stealth gameplay.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1203630/header.jpg" alt="Cloudpunk">
+        <h3>Cloudpunk</h3>
+        <p>Explore Nivalis as a courier in a neon-drenched delivery job.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/970830/header.jpg" alt="Observer">
+        <h3>Observer</h3>
+        <p>Cyber-noir horror game starring Rutger Hauer as a neural detective.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/281990/header.jpg" alt="Stellaris">
+        <h3>Stellaris</h3>
+        <p>Massive space empire simulation with a sleek futuristic UI.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1361210/header.jpg" alt="The Ascent">
+        <h3>The Ascent</h3>
+        <p>Cyberpunk action RPG in a dystopian world run by corporations.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/383870/header.jpg" alt="Technobabylon">
+        <h3>Technobabylon</h3>
+        <p>Retro-futuristic point-and-click with AI conspiracies and net-hacking.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/976730/header.jpg" alt="Halo Infinite">
+        <h3>Halo Infinite</h3>
+        <p>Return as Master Chief in an open-world futuristic battlefield.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/239140/header.jpg" alt="Dying Light">
+        <h3>Dying Light</h3>
+        <p>Open-world parkour zombie survival with futuristic gear.</p>
+      </div>
+      <div class="product-card">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg" alt="Assassin’s Creed Odyssey">
+        <h3>AC Odyssey</h3>
+        <p>Ancient myths with sci-fi animus flair and stylized design.</p>
+      </div>
+    </div>
+    <button class="scroll-btn right" onclick="scrollCarousel(1)">&#10095;</button>
+  </div>
+  
+</section>
+
+  </section>
+
+  <!-- Feedback -->
+  <section id="feedback">
+    <h2>Rate Your Experience</h2>
+    <div class="star-rating" id="star-rating">
+      <span class="star" data-value="1">&#9733;</span>
+      <span class="star" data-value="2">&#9733;</span>
+      <span class="star" data-value="3">&#9733;</span>
+      <span class="star" data-value="4">&#9733;</span>
+      <span class="star" data-value="5">&#9733;</span>
+    </div>
+    <p id="rating-result" style="margin-top: 15px;"></p>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 GameVerse. Powered by Neon & Code.</p>
+  </footer>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('login')">&times;</span>
+      <h3>Login</h3>
+      <form>
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('signup')">&times;</span>
+      <h3>Sign Up</h3>
+      <form>
+        <input type="text" placeholder="Username" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const stars = document.querySelectorAll('.star');
+    const result = document.getElementById('rating-result');
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => highlightStars(star.dataset.value));
+      star.addEventListener('mouseout', () => highlightStars(selectedRating));
+      star.addEventListener('click', () => {
+        selectedRating = star.dataset.value;
+        result.textContent = `You rated us ${selectedRating} star${selectedRating > 1 ? 's' : ''}!`;
+      });
+    });
+
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        star.classList.toggle('hovered', star.dataset.value <= rating);
+        star.classList.toggle('selected', star.dataset.value <= rating);
+      });
+    }
+
+    function openModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'flex';
+    }
+
+    function closeModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'none';
+    }
+
+    // Close modals on outside click
+    window.addEventListener('click', (e) => {
+      ['loginModal', 'signupModal'].forEach(id => {
+        const modal = document.getElementById(id);
+        if (e.target === modal) modal.style.display = 'none';
+      });
+    });
+  </script>
+  <script>
+  const carousel = document.getElementById('gameCarousel');
+  let autoScroll = setInterval(() => scrollCarousel(1), 3000); // every 3 sec
+
+  function scrollCarousel(direction) {
+    carousel.scrollBy({
+      left: direction * 300,
+      behavior: 'smooth'
+    });
+  }
+
+  // Pause auto-scroll on hover
+  carousel.addEventListener('mouseover', () => clearInterval(autoScroll));
+  carousel.addEventListener('mouseout', () => {
+    autoScroll = setInterval(() => scrollCarousel(1), 1000);
+  });
+</script>
+
+<script>
+  const carousel = document.getElementById('gameCarousel');
+  let autoScrollInterval;
+
+  function scrollCarousel(direction) {
+    carousel.scrollBy({
+      left: direction * 300,
+      behavior: 'smooth'
+    });
+  }
+
+  function startAutoScroll() {
+    autoScrollInterval = setInterval(() => {
+      scrollCarousel(1);
+    }, 2000);
+  }
+
+  function stopAutoScroll() {
+    clearInterval(autoScrollInterval);
+  }
+
+  // Start auto-scroll when page loads
+  window.addEventListener('load', startAutoScroll);
+
+  // Pause when hovering over product cards
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('mouseenter', stopAutoScroll);
+    card.addEventListener('mouseleave', startAutoScroll);
+  });
+</script>
+
+<!-- <script>
+  const homeSection = document.getElementById('home');
+  const gameBackgrounds = [
+    'https://images6.alphacoders.com/114/1146881.jpg', // Cyberpunk 2077
+    'https://images8.alphacoders.com/127/1272067.jpg', // Valorant neon art
+    'https://images3.alphacoders.com/108/1086724.jpg', // Call of Duty MW
+    'https://images2.alphacoders.com/132/1329877.jpeg', // GTA V
+    'https://images5.alphacoders.com/127/1272062.jpg', // League of Legends
+    'https://images3.alphacoders.com/117/1172084.jpg', // ULTRAKILL
+    'https://images2.alphacoders.com/124/1246116.jpg'  // Elden Ring
+  ];
+  let current = 0;
+
+  function updateHomeBackground() {
+    homeSection.style.backgroundImage = `url('${gameBackgrounds[current]}')`;
+    current = (current + 1) % gameBackgrounds.length;
+  }
+
+  updateHomeBackground(); // initial load
+  setInterval(updateHomeBackground, 6000); // change every 6s
+</script> -->
+<script>
+  const carousel = document.getElementById('gameCarousel');
+  let scrollInterval;
+
+  function scrollCarousel(direction) {
+    carousel.scrollBy({
+      left: direction * 320,
+      behavior: 'smooth'
+    });
+  }
+
+  function startAutoScroll() {
+    scrollInterval = setInterval(() => {
+      if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 1) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' }); // loop to start
+      } else {
+        scrollCarousel(1);
+      }
+    }, 2500); // faster scroll
+  }
+
+  function stopAutoScroll() {
+    clearInterval(scrollInterval);
+  }
+
+  window.addEventListener('load', startAutoScroll);
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('mouseenter', stopAutoScroll);
+    card.addEventListener('mouseleave', startAutoScroll);
+  });
+</script>
+
+
+
+</body>
+</html>
